@@ -35,11 +35,19 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			request.setAttribute("loginedMember", member);
 			request.setAttribute("loginedMemberId", loginedMemberId);
 			request.setAttribute("loginedMemberLoginId", member.getLoginId());
+			
+			if (member.getPermissionLevel() == 1) {
+				request.setAttribute("isAdmin", true);
+			} else {
+				request.setAttribute("isAdmin", false);
+			}
+			
 		} else {
 			request.setAttribute("isLogined", false);
 			request.setAttribute("loginedMember", null);
 			request.setAttribute("loginedMemberId", 0L);
 			request.setAttribute("loginedMemberLoginId", "");
+			request.setAttribute("isAdmin", false);
 		}
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);

@@ -80,7 +80,15 @@ public class ArticleController {
 	}
 
 	@RequestMapping("/article/add")
-	public String showAdd(long boardId, Model model) {
+	public String showAdd(long boardId, Model model, HttpServletRequest request) {
+		
+		if(boardId == 1 && !(boolean)request.getAttribute("isAdmin")) {
+			model.addAttribute("alertMsg", "권한이 없습니다");
+			model.addAttribute("historyBack", true);
+
+			return "common/redirect";
+		}
+		
 		Board board = articleService.getBoard(boardId);
 
 		model.addAttribute("board", board);
@@ -89,8 +97,16 @@ public class ArticleController {
 	}
 
 	@RequestMapping("/article/doAdd")
-	public String doAdd(Model model, @RequestParam Map<String, Object> param, HttpSession session, long boardId) {
-		param.put("memberId", session.getAttribute("loginedMemberId"));
+	public String doAdd(Model model, @RequestParam Map<String, Object> param, HttpServletRequest request, long boardId) {
+		
+		if(boardId == 1 && !(boolean)request.getAttribute("isAdmin")) {
+			model.addAttribute("alertMsg", "권한이 없습니다");
+			model.addAttribute("historyBack", true);
+
+			return "common/redirect";
+		}
+		
+		param.put("memberId", request.getAttribute("loginedMemberId"));
 		long newId = articleService.add(param);
 
 		String msg = newId + "번 게시물이 추가되었습니다.";
