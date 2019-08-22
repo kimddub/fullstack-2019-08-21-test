@@ -171,8 +171,19 @@ public class ArticleController {
 	}
 
 	@RequestMapping("/article/doDelete")
-	public String doDelete(Model model, @RequestParam Map<String, Object> param, HttpSession session, long id, long boardId) {
+	public String doDelete(Model model, @RequestParam Map<String, Object> param, HttpServletRequest request, long id, long boardId) {
 		param.put("id", id);
+		
+		Article article = articleService.getOne(Maps.of("id", id));
+		
+		if ((long)article.getMemberId() != (long)request.getAttribute("loginedMemberId")) {
+			if (!(boolean)request.getAttribute("isAdmin")) {
+				model.addAttribute("alertMsg", "권한이 없습니다");
+				model.addAttribute("historyBack", true);
+	
+				return "common/redirect";
+			}
+		}
 
 		Map<String, Object> deleteRs = articleService.delete(param);
 
