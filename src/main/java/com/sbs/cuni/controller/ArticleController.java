@@ -50,7 +50,8 @@ public class ArticleController {
 
 	// 게시물 상세페이지
 	@RequestMapping("article/detail")
-	public String showDetail(@RequestParam(value = "id", defaultValue = "0") int id, Model model, long boardId) {
+	public String showDetail(@RequestParam(value = "id", defaultValue = "0") int id, 
+			Model model, long boardId,HttpSession session) {
 		Board board = articleService.getBoard(boardId);
 
 		model.addAttribute("board", board);
@@ -61,8 +62,12 @@ public class ArticleController {
 
 			return "common/redirect";
 		}
-
+		
 		Article article = articleService.getOne(Maps.of("id", id));
+		
+		if ((long)article.getMemberId() != (long)session.getAttribute("loginedMemberId")) {
+			articleService.increaseView(id);
+		}
 
 		model.addAttribute("article", article);
 

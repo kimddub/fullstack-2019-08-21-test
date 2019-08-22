@@ -86,6 +86,12 @@
 		FROM
 		article WHERE id = #{articleId}
 	</select>
+	
+	<insert id="increaseView" parameterType="Integer">
+		UPDATE article
+		SET hit = hit + 1
+		WHERE id = #{id}
+	</insert>
 
 	<insert id="add" useGeneratedKeys="true" keyProperty="id"
 		parameterType="map">
@@ -148,6 +154,7 @@
 		<id property="regDate" column="regDate" />
 		<id property="title" column="title" />
 		<id property="body" column="body" />
+		<id property="hit" column="hit" />
 		<id property="memberId" column="memberId" />
 		<id property="boardId" column="boardId" />
 		<id property="passwd" column="passwd" />

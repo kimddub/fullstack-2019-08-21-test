@@ -199,4 +199,7 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleDao.getBoard(id);
 	}
 
+	public void increaseView(int id) {
+		articleDao.increaseView(id);
+	}
 }

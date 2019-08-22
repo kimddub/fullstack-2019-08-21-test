@@ -68,6 +68,10 @@
 				<th>내용</th>
 				<td>${article.bodyForPrint}</td>
 			</tr>
+			<tr>
+				<th>조회수</th>
+				<td>${article.hit}</td>
+			</tr>
 		</tbody>
 	</table>
 </div>
